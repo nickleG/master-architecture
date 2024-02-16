@@ -3,7 +3,7 @@ package de.ng.master.architecture.broker.publisher;
 import de.ng.master.architecture.broker.delivery.DeliveryClient;
 import de.ng.master.architecture.broker.delivery.DeliveryEntity;
 import de.ng.master.architecture.broker.delivery.DeliveryRepository;
-import de.ng.master.architecture.broker.subscriber.SubscriberEntity;
+import de.ng.master.architecture.broker.subscriber.SubscriptionEntity;
 import de.ng.master.architecture.broker.subscriber.SubscriptionRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -32,20 +32,20 @@ public class PubService {
   }
 
   private void notifyAllSubscribers(SimpleEventEntity event) {
-    List<SubscriberEntity> subscribers = subRepo.findSubscriberEntitiesByTopic(event.getName());
+    List<SubscriptionEntity> subscribers = subRepo.findSubscriptionEntitiesByTopic(event.getName());
     if (subscribers.isEmpty()) {
       log.warn("No subscribers found for event: {}", event);
     }
     subscribers
-        .forEach(subscriberEntity -> {
-          ResponseEntity<Void> voidResponseEntity = deliveryClient.deliver(event, subscriberEntity);
+        .forEach(subscriptionEntity -> {
+          ResponseEntity<Void> voidResponseEntity = deliveryClient.deliver(event, subscriptionEntity);
           if (voidResponseEntity.getStatusCode().is2xxSuccessful()) {
-            log.info("Event sent successfully to subscriber: {}", subscriberEntity);
-            DeliveryEntity build = DeliveryEntity.builder().subscriberId(subscriberEntity.getId()).eventId(event.getId()).delivered(true).build();
+            log.info("Event sent successfully to subscriber: {}", subscriptionEntity);
+            DeliveryEntity build = DeliveryEntity.builder().subscriberId(subscriptionEntity.getId()).eventId(event.getId()).delivered(true).build();
             deliveryRepo.save(build);
           } else {
-            log.error("Failed to send event to subscriber: {}", subscriberEntity);
-            DeliveryEntity build = DeliveryEntity.builder().subscriberId(subscriberEntity.getId()).eventId(event.getId()).delivered(false).build();
+            log.error("Failed to send event to subscriber: {}", subscriptionEntity);
+            DeliveryEntity build = DeliveryEntity.builder().subscriberId(subscriptionEntity.getId()).eventId(event.getId()).delivered(false).build();
             deliveryRepo.save(build);
           }
         });

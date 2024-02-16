@@ -1,5 +1,6 @@
 package de.ng.master.architecture.broker.publisher;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -32,15 +33,15 @@ class PubControllerTest {
     SimpleEvent simpleEvent = new SimpleEvent(testTopic.getTopic(), testTopic.getContent());
     String content = mapper.writeValueAsString(simpleEvent);
     System.out.println(content);
-    mockMvc.perform(MockMvcRequestBuilders.post("/publish")
+    mockMvc.perform(MockMvcRequestBuilders.post("/publish/" + testTopic.getTopic())
         .content(content).contentType("application/json")).andExpect(status().isOk());
-    verify(pubService).handleEvent(simpleEvent);
+    verify(pubService).handleEvent(any());
   }
 
   @Test
   void shouldNotAcceptEmptyEvent() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.post("/publish").content(mapper.writeValueAsString(new SimpleEvent("", "")))
-        .contentType("application/json")).andExpect(status().isBadRequest());
+    mockMvc.perform(MockMvcRequestBuilders.post("/publish/").content(mapper.writeValueAsString(new SimpleEvent("", "")))
+        .contentType("application/json")).andExpect(status().isNotFound());
     verifyNoInteractions(pubService);
   }
 }

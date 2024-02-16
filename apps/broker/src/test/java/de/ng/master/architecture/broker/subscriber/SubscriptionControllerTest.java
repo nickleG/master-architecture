@@ -26,7 +26,7 @@ class SubscriptionControllerTest {
   @Test
   void subscribe() throws Exception {
     String subscriberContent = mapper.writeValueAsString(
-        new Subscriber("test", "test"));
+        new Subscription("test", "test"));
     System.out.printf(subscriberContent);
     mockMvc.perform(MockMvcRequestBuilders.post("/subscribe").content(subscriberContent)
         .contentType("application/json")).andExpect(status().isOk());

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Subscriber {
+public class Subscription {
 
   private String callbackUrl;
   private String topic;

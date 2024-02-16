@@ -1,7 +1,7 @@
 package de.ng.master.architecture.broker.delivery;
 
 import de.ng.master.architecture.broker.publisher.SimpleEventEntity;
-import de.ng.master.architecture.broker.subscriber.SubscriberEntity;
+import de.ng.master.architecture.broker.subscriber.SubscriptionEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -19,7 +19,7 @@ public class DeliveryClient {
   private final RestTemplate restTemplate;
 
 
-  public ResponseEntity<Void> deliver(SimpleEventEntity event, SubscriberEntity subscriber) {
+  public ResponseEntity<Void> deliver(SimpleEventEntity event, SubscriptionEntity subscriber) {
     log.info("Delivering message: {}", event);
     log.info("Sending event to subscriber: {}", subscriber);
     //post application json to the subscriber

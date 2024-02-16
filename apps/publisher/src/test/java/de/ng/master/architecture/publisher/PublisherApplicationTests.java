@@ -1,10 +1,10 @@
-package de.ng.master.architecture.broker;
+package de.ng.master.architecture.publisher;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class BrokerApplicationTests {
+class PublisherApplicationTests {
 
   @Test
   void contextLoads() {

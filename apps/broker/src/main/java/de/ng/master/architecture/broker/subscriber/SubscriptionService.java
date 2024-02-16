@@ -2,6 +2,7 @@ package de.ng.master.architecture.broker.subscriber;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -9,11 +10,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SubscriptionService {
 
-  SubscriptionRepository subscriptionRepository;
+  private final SubscriptionRepository subscriptionRepository;
 
-  public void handleSubscription(Subscriber subscriber) {
+  public ResponseEntity<Void> handleSubscription(Subscriber subscriber) {
     log.info("Received subscription: {}", subscriber);
     subscriptionRepository.save(SubscriberMapper.map(subscriber));
-
+    return ResponseEntity.ok().build();
   }
 }

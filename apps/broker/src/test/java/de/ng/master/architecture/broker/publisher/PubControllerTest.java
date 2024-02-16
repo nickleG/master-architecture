@@ -5,8 +5,8 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.ng.master.architecture.broker.testdata.TestTopic;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -22,17 +22,19 @@ class PubControllerTest {
 
   @Autowired
   MockMvc mockMvc;
-  @InjectMocks
-  PubController pubController;
   @MockBean
   PubService pubService;
   ObjectMapper mapper = new ObjectMapper();
 
   @Test
   void publishSimpleEvent() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.post("/publish").content(mapper.writeValueAsString(new SimpleEvent("test", "test")))
-        .contentType("application/json")).andExpect(status().isOk());
-    verify(pubService).handleEvent(new SimpleEvent("test", "test"));
+    TestTopic testTopic = new TestTopic();
+    SimpleEvent simpleEvent = new SimpleEvent(testTopic.getTopic(), testTopic.getContent());
+    String content = mapper.writeValueAsString(simpleEvent);
+    System.out.println(content);
+    mockMvc.perform(MockMvcRequestBuilders.post("/publish")
+        .content(content).contentType("application/json")).andExpect(status().isOk());
+    verify(pubService).handleEvent(simpleEvent);
   }
 
   @Test

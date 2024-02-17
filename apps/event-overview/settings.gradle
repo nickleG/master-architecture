@@ -1,0 +1,15 @@
+pluginManagement {
+    repositories {
+        maven {
+            url('https://artifacts.we.decodeinsurance.de/repository/maven-devzone-public/')
+
+            maven { url = 'https://maven.vaadin.com/vaadin-prereleases' }
+            gradlePluginPortal()
+        }
+
+        plugins {
+            id 'com.vaadin' version "${vaadinVersion}"
+        }
+    }
+}
+rootProject.name = 'event-overview'

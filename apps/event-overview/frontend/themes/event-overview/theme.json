@@ -1,0 +1,15 @@
+{
+  "lumoImports": [
+    "typography",
+    "color",
+    "spacing",
+    "badge",
+    "utility"
+  ],
+  "assets": {
+    "@fontsource/inconsolata": {
+      "*.css": "@fontsource/inconsolata",
+      "files/*": "@fontsource/inconsolata/files"
+    }
+  }
+}

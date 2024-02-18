@@ -1,2 +1,9 @@
 server:
   port: 8082
+subscription:
+  callback:
+    url: http://localhost:8082/subscription
+  client:
+    name: publisher
+  publish:
+    url: http://localhost:8083/publish/

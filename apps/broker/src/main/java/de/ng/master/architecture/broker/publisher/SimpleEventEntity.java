@@ -13,7 +13,7 @@ public class SimpleEventEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
-  private String name;
+  private String topic;
   private String jsonContent;
   private boolean published;
 

@@ -14,7 +14,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import de.ng.master.architecture.views.about.AboutView;
 import de.ng.master.architecture.views.gridwithfilters.GridwithFiltersView;
-import de.ng.master.architecture.views.helloworld.HelloWorldView;
+import de.ng.master.architecture.views.helloworld.EventOverview;
 
 /**
  * The main view is a top-level placeholder for other views.
@@ -52,7 +52,7 @@ public class MainLayout extends AppLayout {
   private SideNav createNavigation() {
     SideNav nav = new SideNav();
 
-    nav.addItem(new SideNavItem("Hello World", HelloWorldView.class, VaadinIcon.ABACUS.create()));
+    nav.addItem(new SideNavItem("Hello World", EventOverview.class, VaadinIcon.ABACUS.create()));
     nav.addItem(new SideNavItem("About", AboutView.class, VaadinIcon.FILE.create()));
     nav.addItem(
         new SideNavItem("Grid with Filters", GridwithFiltersView.class, VaadinIcon.FILTER.create()));
@@ -61,9 +61,8 @@ public class MainLayout extends AppLayout {
   }
 
   private Footer createFooter() {
-    Footer layout = new Footer();
 
-    return layout;
+    return new Footer();
   }
 
   @Override

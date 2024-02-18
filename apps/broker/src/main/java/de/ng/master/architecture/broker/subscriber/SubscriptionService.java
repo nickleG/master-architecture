@@ -14,7 +14,15 @@ public class SubscriptionService {
 
   public ResponseEntity<Void> handleSubscription(Subscriber subscriber) {
     log.info("Received subscription: {}", subscriber);
-    subscriptionRepository.save(SubscriberMapper.map(subscriber));
+    SubscriberEntity entity = SubscriberMapper.map(subscriber);
+    subscriptionRepository.findSubscriberEntityByCallbackUrlAndTopic(subscriber.getCallbackUrl(), subscriber.getTopic())
+        .ifPresentOrElse(
+            existing -> log.info("Subscription already exists: {}", existing),
+            () -> {
+              log.info("Saving subscription: {}", entity);
+              subscriptionRepository.save(entity);
+            }
+        );
     return ResponseEntity.ok().build();
   }
 }

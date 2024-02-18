@@ -1,5 +1,7 @@
 package de.ng.master.architecture.subscriber.subscription;
 
+import de.ng.master.architecture.eventlib.events.Notification;
+import de.ng.master.architecture.eventlib.pubsub.client.SubscribeClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -8,11 +10,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class InitSubscription implements CommandLineRunner {
 
-  private final SubscriptionClient client;
+  private final SubscribeClient client;
 
   @Override
   public void run(String... args) {
-    client.subscribe(new Subscription("http://localhost:8081/notification", Notification.class.getSimpleName()));
+    client.subscribe(Notification.class);
   }
 
 }

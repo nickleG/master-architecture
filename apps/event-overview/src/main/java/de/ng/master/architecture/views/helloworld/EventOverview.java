@@ -7,15 +7,17 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import de.ng.master.architecture.views.MainLayout;
+import lombok.Getter;
 
 @PageTitle("Hello World")
 @Route(value = "hello", layout = MainLayout.class)
 @RouteAlias(value = "", layout = MainLayout.class)
-public class HelloWorldView extends HorizontalLayout {
+@Getter
+public class EventOverview extends HorizontalLayout {
 
-  private Button sayHello;
+  private final Button sayHello;
 
-  public HelloWorldView() {
+  public EventOverview() {
     sayHello = new Button("Say hello");
     sayHello.addClickShortcut(Key.ENTER);
 

@@ -8,13 +8,13 @@ public class SimpleEventMapper {
 
   public static SimpleEventEntity map(SimpleEvent event) {
     SimpleEventEntity entity = new SimpleEventEntity();
-    entity.setName(event.getTopic());
+    entity.setTopic(event.getTopic());
     entity.setJsonContent(event.getJsonContent());
     return entity;
   }
 
   public static SimpleEvent map(SimpleEventEntity entity) {
-    return new SimpleEvent(entity.getName(), entity.getJsonContent());
+    return new SimpleEvent(entity.getTopic(), entity.getJsonContent());
   }
 
 

@@ -17,11 +17,14 @@ configurations {
     }
 }
 
+
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
+    implementation 'de.ng.master.architecture:event-lib:0.0.1'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'

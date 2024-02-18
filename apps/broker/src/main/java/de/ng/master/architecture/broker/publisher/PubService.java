@@ -32,7 +32,7 @@ public class PubService {
   }
 
   private void notifyAllSubscribers(SimpleEventEntity event) {
-    List<SubscriberEntity> subscribers = subRepo.findSubscriberEntitiesByTopic(event.getName());
+    List<SubscriberEntity> subscribers = subRepo.findSubscriberEntitiesByTopic(event.getTopic());
     if (subscribers.isEmpty()) {
       log.warn("No subscribers found for event: {}", event);
     }

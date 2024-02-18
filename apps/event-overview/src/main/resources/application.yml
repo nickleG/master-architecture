@@ -1,0 +1,24 @@
+server:
+  port: ${PORT:33435}
+
+logging:
+  level:
+    org.atmosphere: warn
+
+spring:
+  mustache:
+    check-template-location: false
+  jpa:
+    defer-datasource-initialization: true
+
+vaadin:
+  launch-browser: true
+  whitelisted-packages: "com.vaadin,org.vaadin,dev.hilla,de.ng.master.architecture"
+
+subscription:
+  callback:
+    url: http://localhost:33435/subscription
+  publish:
+    url: http://localhost:8083/publish/
+  client:
+    name: event-overview

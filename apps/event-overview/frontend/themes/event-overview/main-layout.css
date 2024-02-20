@@ -15,6 +15,12 @@ vaadin-side-nav-item vaadin-icon {
   box-sizing: border-box;
 }
 
+.glow-border {
+
+  box-shadow: 0 0 8px 2px #00B4D8; /* Adjust color and size to your liking */
+  transition: box-shadow 0.5s; /* Smooth transition for the glow effect */
+}
+
 [slot="drawer"]:is(header, footer):is(:empty) {
   display: none;
 }

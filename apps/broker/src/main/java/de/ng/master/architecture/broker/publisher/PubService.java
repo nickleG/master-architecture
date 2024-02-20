@@ -25,7 +25,7 @@ public class PubService {
    * saves the event to the database and starts asynchronous processing in a new thread to return a response to the publisher as quickly as possible
    */
   public void handleEvent(SimpleEvent event) {
-    log.info("Saving event: {}", event);
+    log.debug("Saving event: {}", event);
     SimpleEventEntity entity = SimpleEventMapper.map(event);
     SimpleEventEntity save = eventRepo.save(entity);
     new Thread(() -> notifyAllSubscribers(save)).start();

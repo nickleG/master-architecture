@@ -1,0 +1,9 @@
+server:
+  port: 8082
+subscription:
+  callback:
+    url: http://localhost:8082/subscription
+  client:
+    name: Service-B
+  publish:
+    url: http://localhost:8083/publish/

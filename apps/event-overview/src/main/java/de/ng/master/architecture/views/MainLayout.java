@@ -13,8 +13,8 @@ import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import de.ng.master.architecture.views.about.AboutView;
+import de.ng.master.architecture.views.eventoverview.EventOverview;
 import de.ng.master.architecture.views.gridwithfilters.GridwithFiltersView;
-import de.ng.master.architecture.views.helloworld.EventOverview;
 
 /**
  * The main view is a top-level placeholder for other views.
@@ -64,6 +64,7 @@ public class MainLayout extends AppLayout {
 
     return new Footer();
   }
+
 
   @Override
   protected void afterNavigation() {

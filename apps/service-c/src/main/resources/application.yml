@@ -1,0 +1,9 @@
+server:
+  port: 8084
+subscription:
+  callback:
+    url: http://localhost:8084/subscription
+  client:
+    name: Service-C
+  publish:
+    url: http://localhost:8083/publish/

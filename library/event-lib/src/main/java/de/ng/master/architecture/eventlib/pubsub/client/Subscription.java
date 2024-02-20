@@ -12,5 +12,6 @@ public class Subscription implements Serializable {
 
   private String callbackUrl;
   private String topic;
+  private String clientName;
 
 }

@@ -1,9 +1,0 @@
-server:
-  port: 8081
-subscription:
-  callback:
-    url: http://localhost:8081/subscription
-  client:
-    name: subscription-client
-  publish:
-    url: http://localhost:8083/publish/

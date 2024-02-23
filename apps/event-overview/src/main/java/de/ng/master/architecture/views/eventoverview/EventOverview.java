@@ -8,6 +8,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
@@ -19,7 +20,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
-@PageTitle("Hello World")
+@PageTitle("Event Overview")
 @Route(value = "", layout = MainLayout.class)
 @Slf4j
 @Getter
@@ -41,27 +42,46 @@ public class EventOverview extends VerticalLayout {
     subscriptionComboBox.setItems(overviewService.getSubscriptions());
     subscriptionComboBox.setValue(overviewService.getSubscriptions().getFirst());
     commandBar.add(subscriptionComboBox);
-    TextField commandValue = new TextField("Command Value", "alert");
-
+    TextField commandValue = new TextField("Command Value", "");
+    ComboBox<String> commandBombobox = new ComboBox<>("Command Value");
+    commandBombobox.setItems(List.of("alert", "notification"));
+    commandBombobox.setVisible(false);
+    Span commandEmpty = new Span(" ");
+    commandEmpty.setVisible(false);
     subscriptionComboBox.setItemLabelGenerator(Subscription::getClientName);
     ComboBox<Action> actions = new ComboBox<>("Action");
-    actions.setItems(overviewService.getActions(client, subscriptionComboBox, commandValue));
+    actions.setItems(overviewService.getActions(client, subscriptionComboBox, commandValue, commandBombobox));
     actions.setItemLabelGenerator(Action::name);
     actions.addValueChangeListener(e -> {
-      commandValue.setVisible(!List.of("Start", "Stop").contains(e.getValue().name()));
-      if (e.getValue().name().equals("TimeOut")) {
-        commandValue.setValue("3000");
-      } else {
-        commandValue.setValue("alert");
+      Action value = e.getValue();
+      if (List.of("Start", "Stop").contains(value.name())) {
+        commandBombobox.setVisible(false);
+        commandValue.setVisible(false);
+        commandEmpty.setVisible(true);
       }
-
+      if (List.of("Publish", "Subscribe", "Unsubscribe").contains(value.name())) {
+        commandBombobox.setVisible(true);
+        if (commandBombobox.isEmpty()) {
+          commandBombobox.setValue("notification");
+        }
+        commandValue.setVisible(false);
+        commandEmpty.setVisible(false);
+      }
+      if ("TimeOut".equals(value.name())) {
+        commandBombobox.setVisible(false);
+        commandValue.setVisible(true);
+        if (commandValue.isEmpty()) {
+          commandValue.setValue("3000");
+        }
+        commandEmpty.setVisible(false);
+      }
     });
 
-    actions.setValue(overviewService.getActions(client, subscriptionComboBox, commandValue).getFirst());
+    actions.setValue(overviewService.getActions(client, subscriptionComboBox, commandValue, commandBombobox).getFirst());
     Button button = new Button("Execute", e -> actions.getValue().action().run());
     button.addClickShortcut(Key.ENTER);
     button.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_CONTRAST);
-    commandBar.add(actions, commandValue, button);
+    commandBar.add(actions, commandValue, commandBombobox, commandEmpty, button);
     add(commandBar);
 
     setWidth("100%");
@@ -99,5 +119,9 @@ public class EventOverview extends VerticalLayout {
 
   public void addEventState(EventWithCounter eventWithCounterState) {
     this.totalEventCounter.add(eventWithCounterState);
+  }
+
+  public void removeSubscription(SubscriptionComp comp) {
+    subscriptionLayout.remove(comp);
   }
 }

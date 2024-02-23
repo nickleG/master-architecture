@@ -7,6 +7,7 @@ import de.ng.master.architecture.eventlib.events.Alert;
 import de.ng.master.architecture.eventlib.events.Notification;
 import de.ng.master.architecture.eventlib.events.SuccessfulArrivedEvent;
 import de.ng.master.architecture.eventlib.pubsub.client.PublishClient;
+import de.ng.master.architecture.eventlib.util.WaitTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -19,17 +20,20 @@ public class EventEndpoint implements OnAlert, OnNotification {
 
   private final PublishClient publishClient;
   private final LibConfig libConfig;
-
+  private final WaitTime waitTime;
   @Override
   public ResponseEntity<Void> onAlert(Alert message) {
     log.info("Received onAlert with message: {}", message);
+    waitTime.waitGaussTime();
     publishClient.publish(new SuccessfulArrivedEvent(message.getUuid(), message.getClass().getSimpleName(), libConfig.getClientName()));
     return ResponseEntity.ok().build();
   }
 
+
   @Override
   public ResponseEntity<Void> onNotification(Notification message) {
     log.info("Received onNotification with message: {}", message);
+    waitTime.waitGaussTime();
     publishClient.publish(new SuccessfulArrivedEvent(message.getUuid(), message.getClass().getSimpleName(), libConfig.getClientName()));
     return ResponseEntity.ok().build();
   }

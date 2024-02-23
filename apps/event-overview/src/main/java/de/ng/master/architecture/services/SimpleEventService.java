@@ -1,7 +1,7 @@
 package de.ng.master.architecture.services;
 
-import de.ng.master.architecture.data.SamplePerson;
-import de.ng.master.architecture.data.SamplePersonRepository;
+import de.ng.master.architecture.data.SimpleEventEntity;
+import de.ng.master.architecture.data.SimpleEventRepository;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,19 +9,19 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SamplePersonService {
+public class SimpleEventService {
 
-  private final SamplePersonRepository repository;
+  private final SimpleEventRepository repository;
 
-  public SamplePersonService(SamplePersonRepository repository) {
+  public SimpleEventService(SimpleEventRepository repository) {
     this.repository = repository;
   }
 
-  public Optional<SamplePerson> get(Long id) {
+  public Optional<SimpleEventEntity> get(Long id) {
     return repository.findById(id);
   }
 
-  public SamplePerson update(SamplePerson entity) {
+  public SimpleEventEntity update(SimpleEventEntity entity) {
     return repository.save(entity);
   }
 
@@ -29,11 +29,11 @@ public class SamplePersonService {
     repository.deleteById(id);
   }
 
-  public Page<SamplePerson> list(Pageable pageable) {
+  public Page<SimpleEventEntity> list(Pageable pageable) {
     return repository.findAll(pageable);
   }
 
-  public Page<SamplePerson> list(Pageable pageable, Specification<SamplePerson> filter) {
+  public Page<SimpleEventEntity> list(Pageable pageable, Specification<SimpleEventEntity> filter) {
     return repository.findAll(filter, pageable);
   }
 

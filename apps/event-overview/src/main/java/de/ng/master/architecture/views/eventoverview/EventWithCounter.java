@@ -17,12 +17,13 @@ public class EventWithCounter extends VerticalLayout {
   public EventWithCounter(EventWithCounterState<?> eventWithCounterState) {
     super();
     this.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-    ReadOnlyHasValue<String> readOnlyHasValue = new ReadOnlyHasValue<>(eventName::setText);
+    ReadOnlyHasValue<String> readOnlyHasValue = new ReadOnlyHasValue<>(e -> eventName.setText(e.replace("Event", "")));
     ReadOnlyHasValue<Integer> readOnlyHasValueCounter = new ReadOnlyHasValue<>(e -> counter.setText(e.toString()));
     eventWithCounterBinder.forField(readOnlyHasValue).bind(EventWithCounterState::getEventName, null);
     eventWithCounterBinder.forField(readOnlyHasValueCounter).bind(EventWithCounterState::getCounter, null);
     eventWithCounterBinder.setBean(eventWithCounterState);
 
     this.add(eventName, counter);
+    this.addClassNames("event-with-counter", "border-right");
   }
 }

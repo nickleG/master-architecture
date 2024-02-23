@@ -28,7 +28,10 @@ public class FlowControlClient {
   }
 
   public void unsubscribe(Subscription subscription, String event) {
-    restTemplate.getForEntity(getUrl(subscription.getCallbackUrl()) + "/unsubscribe/" + event, Void.class);
+    log.info("unsubscribe {} from event {}", subscription, event);
+    String target = getUrl(subscription.getCallbackUrl()) + "/unsubscribe/" + event;
+    log.info("URL: {}", target);
+    restTemplate.getForEntity(target, Void.class);
   }
 
   public void subscribe(Subscription subscription, String event) {

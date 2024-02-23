@@ -23,7 +23,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'de.ng.master.architecture:event-lib:0.0.2'
+    implementation 'de.ng.master.architecture:event-lib:0.0.3'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'

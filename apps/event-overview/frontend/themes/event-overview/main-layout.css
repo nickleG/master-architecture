@@ -16,9 +16,32 @@ vaadin-side-nav-item vaadin-icon {
 }
 
 .glow-border {
+  border-radius: 5px;
+  box-shadow: 0 0 8px 2px var(--lumo-primary-color-50pct); /* Adjust color and size to your liking */
+  transition: box-shadow 0.1s; /* Smooth transition for the glow effect */
+}
 
-  box-shadow: 0 0 8px 2px #00B4D8; /* Adjust color and size to your liking */
-  transition: box-shadow 0.5s; /* Smooth transition for the glow effect */
+.unglow-border {
+  border-radius: 5px;
+  box-shadow: 0 0 8px 2px var(--lumo-contrast-50pct) /* Adjust color and size to your liking */
+  transition: box-shadow 0.1s; /* Smooth transition for the glow effect */
+}
+
+.border-small {
+  /* a small border with rounded corners and a light darker shape background color */
+  min-height: 127.2px;
+  border-radius: 5px;
+  background-color: var(--lumo-contrast-10pct);
+  border: 1px solid var(--lumo-contrast-10pct);
+}
+
+.border-right {
+  /* a small border with rounded corners and a light darker shape background color */
+  min-height: 127.2px;
+
+  background-color: var(--lumo-contrast-10pct);
+  border-right: 1px solid var(--lumo-contrast-50pct);
+  border-left: 1px solid var(--lumo-contrast-50pct);
 }
 
 [slot="drawer"]:is(header, footer):is(:empty) {

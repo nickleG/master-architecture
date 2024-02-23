@@ -11,6 +11,7 @@ public class TotalEventCounter extends FormLayout {
   public TotalEventCounter() {
     super();
     this.setResponsiveSteps(new ResponsiveStep("0", 6));
+    this.addClassNames("total-event-counter", "border-small");
   }
 
   public void add(EventWithCounter eventWithCounter) {

@@ -18,7 +18,7 @@ public class SubscriptionComp extends VerticalLayout {
   private final Binder<SubscriptionState> subscriptionBinder = new Binder<>();
 
   public SubscriptionComp(SubscriptionState subscription) {
-    System.out.println(subscription);
+
     ReadOnlyHasValue<String> readOnlyHasValueHeader = new ReadOnlyHasValue<>(header::setText);
     ReadOnlyHasValue<String> readOnlyHasValueParagraph = new ReadOnlyHasValue<>(topic::setText);
     ReadOnlyHasValue<Integer> readOnlyHasValueCounter = new ReadOnlyHasValue<>(e -> counter.setText(e.toString()));
@@ -29,14 +29,17 @@ public class SubscriptionComp extends VerticalLayout {
     subscriptionBinder.setBean(subscription);
     this.setDefaultHorizontalComponentAlignment(Alignment.START);
     this.identifier = subscription.getTopic() + subscription.getClientName();
-    this.addClassName("glow-border");
   }
 
   public void increaseCounter() {
     SubscriptionState bean = subscriptionBinder.getBean();
     bean.setCounter(subscriptionBinder.getBean().getCounter() + 1);
     subscriptionBinder.setBean(bean);
+  }
 
+  public void glowBorder() {
+    this.addClassNames("glow-border"); // Add the glowing effect
+    // Use a Timer to remove the class after 2 seconds
   }
 
 }

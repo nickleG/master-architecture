@@ -19,4 +19,10 @@ public class SubscriptionController {
     log.info("Received subscription: {}", subscriber);
     return subscriptionService.handleSubscription(subscriber);
   }
+
+  @PostMapping("/unsubscribe")
+  public ResponseEntity<Void> unsubscribe(@RequestBody Subscriber subscriber) {
+    log.info("Received subscription: {}", subscriber);
+    return subscriptionService.handleUnSubscription(subscriber);
+  }
 }

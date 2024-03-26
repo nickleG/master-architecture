@@ -4,7 +4,7 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.textfield.TextField;
 import de.ng.master.architecture.eventlib.events.Event;
 import de.ng.master.architecture.eventlib.events.SubscriptionEstablishedEvent;
-import de.ng.master.architecture.eventlib.events.SuccessfulArrivedEvent;
+import de.ng.master.architecture.eventlib.events.SubscriptionRemovedEvent;
 import de.ng.master.architecture.eventlib.pubsub.client.Subscription;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +29,7 @@ public class EventOverviewService {
 
   public void addSubscription(SubscriptionEstablishedEvent event) {
     log.info("Adding subscription: {}", event);
-    eachSubscriptionOf(event).forEach(entry -> {
+    eachSubscriptionOfNotAlreadyAdded(event.getClientName(), event.getTopic()).forEach(entry -> {
           log.info("Adding subscription to: {}", entry.getKey());
           SubscriptionState subscriptionState = new SubscriptionState(event.getClientName(), event.getTopic());
           SubscriptionComp subscriptionComp = entry.getKey().addSubscription(subscriptionState);
@@ -38,27 +38,54 @@ public class EventOverviewService {
     );
   }
 
-  private Stream<Entry<EventOverview, Map<SubscriptionState, SubscriptionComp>>> eachSubscriptionOf(SubscriptionEstablishedEvent event) {
+  public void removeSubscription(SubscriptionRemovedEvent event) {
+    log.info("remove subscription: {}", event);
+    eachSubscriptionOf(event.getClientName(), event.getTopic()).forEach(entry -> {
+          log.info("remove subscription to: {}", entry.getKey());
+          entry.getValue().keySet().stream().filter(e -> e.getClientName().equals(event.getClientName()) && e.getTopic().equals(event.getTopic())).forEach(state
+              -> {
+            log.info("remove subscription to: {}", state);
+            SubscriptionComp comp = entry.getValue().remove(state);
+            entry.getKey().removeSubscription(comp);
+          });
+//          SubscriptionComp subscriptionComp = entry.getKey().removeSubscription(subscriptionState);
+          //        entry.getValue().put(subscriptionState, subscriptionComp);
+        }
+    );
+  }
+
+  private Stream<Entry<EventOverview, Map<SubscriptionState, SubscriptionComp>>> eachSubscriptionOfNotAlreadyAdded(String eventClientName, String eventTopic) {
     return eventOverviewSubscriptions.entrySet().stream().filter(e ->
         e.getValue().keySet().stream().noneMatch(subscriptionState ->
-            subscriptionState.getClientName().equals(event.getClientName()) &&
-                subscriptionState.getTopic().equals(event.getTopic())
+            subscriptionState.getClientName().equals(eventClientName) &&
+                subscriptionState.getTopic().equals(eventTopic)
         ));
   }
 
-  private Stream<SubscriptionComp> eachSubscriptionOf(SuccessfulArrivedEvent event) {
+  private Stream<Entry<EventOverview, Map<SubscriptionState, SubscriptionComp>>> eachSubscriptionOf(String eventClientName, String eventTopic) {
+    return eventOverviewSubscriptions.entrySet().stream().filter(e ->
+        e.getValue().keySet().stream().anyMatch(subscriptionState ->
+            subscriptionState.getClientName().equals(eventClientName) &&
+                subscriptionState.getTopic().equals(eventTopic)
+        ));
+  }
+
+  private Stream<SubscriptionComp> subscriptionComponentsFor(String eventClientName, String eventTopic) {
     return eventOverviewSubscriptions.values().stream()
         .flatMap(e -> e.values().stream())
         .filter(e -> {
           SubscriptionState bean = e.getSubscriptionBinder().getBean();
-          return bean.getClientName().equals(event.getClientName()) &&
-              bean.getTopic().equals(event.getTopic());
+          return bean.getClientName().equals(eventClientName) &&
+              bean.getTopic().equals(eventTopic);
         });
   }
 
 
-  public void onEventArrived(SuccessfulArrivedEvent event) {
-    eachSubscriptionOf(event).forEach(SubscriptionComp::increaseCounter);
+  public void onEventArrived(String eventClientName, String eventTopic) {
+    subscriptionComponentsFor(eventClientName, eventTopic).forEach(e -> {
+      e.increaseCounter();
+      e.glowBorder();
+    });
   }
 
   public List<Subscription> getSubscriptions() {
@@ -67,14 +94,15 @@ public class EventOverviewService {
         new Subscription("http://localhost:8084", null, "Service C"));
   }
 
-  public List<Action> getActions(FlowControlClient client, ComboBox<Subscription> subscriptionComboBox, TextField commandValue) {
+  public List<Action> getActions(FlowControlClient client, ComboBox<Subscription> subscriptionComboBox, TextField commandValue,
+      ComboBox<String> commandBombobox) {
     return List.of(
         new Action("Start", () -> client.start(subscriptionComboBox.getValue())),
         new Action("Stop", () -> client.stop(subscriptionComboBox.getValue())),
         new Action("TimeOut", () -> client.timeout(subscriptionComboBox.getValue(), commandValue.getValue())),
-        new Action("Publish", () -> client.publish(subscriptionComboBox.getValue(), commandValue.getValue())),
-        new Action("Subscribe", () -> client.subscribe(subscriptionComboBox.getValue(), commandValue.getValue())),
-        new Action("Unsubscribe", () -> client.unsubscribe(subscriptionComboBox.getValue(), commandValue.getValue())));
+        new Action("Publish", () -> client.publish(subscriptionComboBox.getValue(), commandBombobox.getValue())),
+        new Action("Subscribe", () -> client.subscribe(subscriptionComboBox.getValue(), commandBombobox.getValue())),
+        new Action("Unsubscribe", () -> client.unsubscribe(subscriptionComboBox.getValue(), commandBombobox.getValue())));
   }
 
   public void add(EventOverview eventOverview) {
@@ -106,4 +134,5 @@ public class EventOverviewService {
 
 
   }
+
 }

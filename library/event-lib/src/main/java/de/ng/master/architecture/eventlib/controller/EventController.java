@@ -68,6 +68,14 @@ public class EventController {
     }
   }
 
+  @GetMapping("/unsubscribe")
+  public void unsubscribe() {
+    log.info("Unsubscribing from every event");
+    subscribeClient.unSubscribe(Alert.class);
+    subscribeClient.unSubscribe(Notification.class);
+  }
+
+
   @GetMapping("/start")
   public void start() {
     this.run = true;

@@ -25,4 +25,20 @@ public class SubscriptionService {
         );
     return ResponseEntity.ok().build();
   }
+
+  public ResponseEntity<Void> handleUnSubscription(Subscriber subscriber) {
+    log.info("Received unssubscription: {}", subscriber);
+    SubscriberEntity entity = SubscriberMapper.map(subscriber);
+    subscriptionRepository.findSubscriberEntityByCallbackUrlAndTopic(subscriber.getCallbackUrl(), subscriber.getTopic())
+        .ifPresentOrElse(
+            existing -> {
+              log.info("Subscription exists: {}", existing);
+              subscriptionRepository.delete(existing);
+            },
+            () -> {
+              log.info("no subscription: {}", entity);
+            }
+        );
+    return ResponseEntity.ok().build();
+  }
 }

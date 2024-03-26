@@ -7,3 +7,9 @@ subscription:
     name: Service-A
   publish:
     url: http://localhost:8083/publish/
+
+#log all available routes
+logging:
+  level:
+    web: TRACE
+

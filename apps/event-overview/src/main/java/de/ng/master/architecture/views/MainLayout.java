@@ -40,7 +40,7 @@ public class MainLayout extends AppLayout {
   }
 
   private void addDrawerContent() {
-    H1 appName = new H1("My App");
+    H1 appName = new H1("Event Driven Architecture");
     appName.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
     Header header = new Header(appName);
 
@@ -52,10 +52,9 @@ public class MainLayout extends AppLayout {
   private SideNav createNavigation() {
     SideNav nav = new SideNav();
 
-    nav.addItem(new SideNavItem("Hello World", EventOverview.class, VaadinIcon.ABACUS.create()));
+    nav.addItem(new SideNavItem("Event Overview", EventOverview.class, VaadinIcon.ABACUS.create()));
+    nav.addItem(new SideNavItem("Events", GridwithFiltersView.class, VaadinIcon.FILTER.create()));
     nav.addItem(new SideNavItem("About", AboutView.class, VaadinIcon.FILE.create()));
-    nav.addItem(
-        new SideNavItem("Grid with Filters", GridwithFiltersView.class, VaadinIcon.FILTER.create()));
 
     return nav;
   }

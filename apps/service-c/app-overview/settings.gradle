@@ -1,0 +1,8 @@
+pluginManagement {
+    repositories {
+        maven {
+            url('https://artifacts.we.decodeinsurance.de/repository/maven-devzone-public/')
+        }
+    }
+}
+rootProject.name = 'app-overview'

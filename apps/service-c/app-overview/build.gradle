@@ -1,0 +1,40 @@
+plugins {
+    // definition can be found here: https://dev.azure.com/HDI-GLOBAL/HDI%20Global%20Portal%20Project/_git/Libraries?path=/plugins/ses-gradle-base-plugin/src/main/groovy/global/hdi/ses/plugin/SeSGradleBasePlugin.groovy
+    id "global.hdi.ses.plugin.SeSGradleBasePlugin" version "2.4.0"
+    id "global.hdi.ses.plugin.SeSGradleIntegrationtestPlugin" version "2.4.0"
+    // define versions
+    id 'org.springframework.boot' version '3.2.3'
+    id 'io.spring.dependency-management' version '1.1.4'
+    id "org.sonarqube" version "4.4.1.3373"
+}
+
+group = 'global.hdi'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '21'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

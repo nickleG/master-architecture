@@ -1,0 +1,6 @@
+hdi-oauth2-proxy:
+  resource-server:
+    proxy:
+      disabled: true
+      host: acc004-hdi-global-portal-egress-gateway.egress-gateway.svc.cluster.local
+      port: 3128
